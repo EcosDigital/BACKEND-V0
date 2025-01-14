@@ -231,3 +231,12 @@ export const registerMienbroRequest = async (req, res) => {
     return res.status(500).json({ message: "Error de servidor!" });
   }
 };
+
+export const getTotalMiembrosRequest = async (req, res) => {
+  try {
+    const results = await pool.query('SELECT COUNT(*) AS total_miembros FROM miembros')
+    return res.status(200).json({ message: results.rows })
+  } catch (error) {
+    return res.status(500).json({ message: "Error de servidor!" });
+  }
+}
