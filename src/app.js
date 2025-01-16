@@ -1,12 +1,14 @@
 import express from "express";
-import morgan from "morgan";
 import cors from "cors";
+import morgan from "morgan";
+import cookieParser from 'cookie-parser'
 
 import { pool } from "./db.js";
 import { FRONTEND_URL } from "./config.js";
 
 //importar rutas de trabajo
 import generalRoutes from "./routes/app.routes.js"
+import authRoutes from './routes/aut.routes.js'
 
 //inicializacion del servidor
 const app = express();
@@ -21,6 +23,7 @@ app.use(
 //visualiza peticiones server por console
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cookieParser());
 
 // Verificar conexión exitosa o errores
 pool.connect((err, client, release) => {
@@ -34,5 +37,6 @@ pool.connect((err, client, release) => {
 
 //usar los modulos de las rutas (end ponit)
 app.use("/api", generalRoutes);
+app.use("/api", authRoutes)
 
 export default app;

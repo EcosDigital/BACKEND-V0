@@ -32,7 +32,7 @@ export const registerMienbroRequest = async (req, res) => {
     const SendSmtpEmail = new brevo.SendSmtpEmail();
 
     SendSmtpEmail.subject = "Ecosistema Digital";
-    SendSmtpEmail.to = [{ email: email_miembro, name: "tester" }];
+    SendSmtpEmail.to = [{ email: email_miembro, name: "ecosistema_digital" }];
     
     SendSmtpEmail.htmlContent = `
     <!DOCTYPE html>
@@ -209,8 +209,8 @@ export const registerMienbroRequest = async (req, res) => {
             
             <p>
               © 2025 Ecosistema Digital. Todos los derechos reservados.<br>
-              <a href="https://www.ecosistemasdigital.com/privacidad">Política de privacidad</a> • 
-              <a href="https://www.ecosistemasdigital.com/terminos">Términos y condiciones</a>
+              <a href="https://ecosistemasdigital.com/privacy-policy">Política de privacidad</a> • 
+              <a href="https://ecosistemasdigital.com/terms-conditions">Términos y condiciones</a>
             </p>
           </div>
         </div>
@@ -239,4 +239,8 @@ export const getTotalMiembrosRequest = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: "Error de servidor!" });
   }
+}
+
+export const  prueba = async (req, res) => {
+  res.json('recived')
 }
