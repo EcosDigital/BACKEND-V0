@@ -296,6 +296,7 @@ export const loginAuth0Request = async (req, res) => {
     });
 
   } catch (error) {
+    console.log(error);
     return res.status(500).json({message: 'Error de servidor'})
   }
 };
