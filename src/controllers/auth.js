@@ -2,9 +2,13 @@ import { pool } from "../db.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import brevo from "@getbrevo/brevo";
+import axios from "axios";
 
 import { createAccesToken } from "../libs/jwt.js";
 import { TOKEN_SECRET } from "../config.js";
+import { oauth2Client } from "../utils/googleConfig.js";
+
+//controllers para usuarios nativos
 
 export const createNewUsuarioRequest = async (req, res) => {
   try {
@@ -190,7 +194,7 @@ export const signinNativeRequest = async (req, res) => {
       "select * from cfg_usuarios where email = $1",
       [email]
     );
-    if (results.rows.lenght <= 0) {
+    if (results.rows <= 0) {
       return res.status(400).json({ message: "Error de credenciales!" });
     }
     //validar contraseña y hash
@@ -215,6 +219,7 @@ export const signinNativeRequest = async (req, res) => {
       picture: results.rows[0].profile_picture,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ message: error.message });
   }
 };
@@ -252,4 +257,45 @@ export const logoutUserNative = async (req, res) => {
     expires: new Date(0),
   });
   return res.sendStatus(200);
+};
+
+export const loginAuth0Request = async (req, res) => {
+  try {
+    const { code } = req.query;
+    const googleRes = await oauth2Client.getToken(code);
+    oauth2Client.setCredentials(googleRes.tokens);
+
+    const userRes = await axios.get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`
+    );
+
+    const { email, family_name, given_name, name, picture } = userRes.data;
+    //validar si existe el usuario (crearlo en caso de no existir)
+    let user = await pool.query('select * from cfg_usuarios where email = $1', [email])
+    if(user.rows <= 0){
+      //crear usuario en caso de no exitir
+      await pool.query('insert into cfg_usuarios(email, id_tipo_auth, name, last_name, nick_name, profile_picture, id_rol, created_at, updated_at) values($1, $2, $3, $4, $5, $6, $7,$8, $9)', [email, 1, given_name, family_name, name, picture, 2, new Date(), new Date() ])
+    }
+    //ubicar el usuario en la base de datos
+    const results = await pool.query('select * from cfg_usuarios where email = $1', [email])
+    
+    const token = await createAccesToken({
+      id: results.rows[0].id,
+      email: results.rows[0].email,
+      nick_name: results.rows[0].nick_name,
+      picture: results.rows[0].profile_picture,
+    });
+
+    res.cookie("token", token);
+
+    res.json({
+      id: results.rows[0].id,
+      email: results.rows[0].email,
+      nick_name: results.rows[0].nick_name,
+      picture: results.rows[0].profile_picture,
+    });
+
+  } catch (error) {
+    return res.status(500).json({message: 'Error de servidor'})
+  }
 };

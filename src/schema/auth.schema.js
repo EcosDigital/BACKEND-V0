@@ -45,3 +45,16 @@ export const singninSchemaNative = z.object({
   password: z
     .string()
 });
+
+//schema que valida el formato del token de cuentas de google
+export const auth0TokenSchema = z.object({
+  given_name: z.string(),
+  family_name: z.string(),
+  nickname: z.string(),
+  name: z.string(),
+  picture: z.string().url(), // Validar que es una URL válida
+  updated_at: z.string().datetime(), // Validar que es una fecha en formato ISO 8601
+  email: z.string().email(), // Validar que es un correo electrónico válido
+  email_verified: z.boolean(), // Validar que es un booleano
+  sub: z.string(), // Validar que es una cadena, puedes añadir más validación según necesites
+});
