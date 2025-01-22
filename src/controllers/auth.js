@@ -242,7 +242,7 @@ export const verifyTokenNativeRequest = async (req, res) => {
 
       return res.json({
         id: userFound.rows[0].id,
-        id_rol: results.rows[0].id_rol,
+        id_rol: userFound.rows[0].id_rol,
         email: userFound.rows[0].email,
         nick_name: userFound.rows[0].nick_name,
         picture: userFound.rows[0].profile_picture,
