@@ -30,7 +30,7 @@ export const createNewUsuarioRequest = async (req, res) => {
     );
     if (results.rows.length > 0) {
       return res
-        .status(400)
+        .status(409)
         .json({ message: "Ya existe un usuario con este email" });
     }
     //hasheando password
@@ -205,6 +205,7 @@ export const signinNativeRequest = async (req, res) => {
 
     const token = await createAccesToken({
       id: results.rows[0].id,
+      id_rol: results.rows[0].id_rol,
       email: results.rows[0].email,
       nick_name: results.rows[0].nick_name,
       picture: results.rows[0].profile_picture,
@@ -214,6 +215,7 @@ export const signinNativeRequest = async (req, res) => {
 
     res.json({
       id: results.rows[0].id,
+      id_rol: results.rows[0].id_rol,
       email: results.rows[0].email,
       nick_name: results.rows[0].nick_name,
       picture: results.rows[0].profile_picture,
@@ -240,6 +242,7 @@ export const verifyTokenNativeRequest = async (req, res) => {
 
       return res.json({
         id: userFound.rows[0].id,
+        id_rol: results.rows[0].id_rol,
         email: userFound.rows[0].email,
         nick_name: userFound.rows[0].nick_name,
         picture: userFound.rows[0].profile_picture,
@@ -281,6 +284,7 @@ export const loginAuth0Request = async (req, res) => {
     
     const token = await createAccesToken({
       id: results.rows[0].id,
+      id_rol: results.rows[0].id_rol,
       email: results.rows[0].email,
       nick_name: results.rows[0].nick_name,
       picture: results.rows[0].profile_picture,
@@ -290,6 +294,7 @@ export const loginAuth0Request = async (req, res) => {
 
     res.json({
       id: results.rows[0].id,
+      id_rol: results.rows[0].id_rol,
       email: results.rows[0].email,
       nick_name: results.rows[0].nick_name,
       picture: results.rows[0].profile_picture,
