@@ -9,6 +9,7 @@ import { FRONTEND_URL } from "./config.js";
 //importar rutas de trabajo
 import generalRoutes from "./routes/app.routes.js"
 import authRoutes from './routes/aut.routes.js'
+import notificationRoutes from './routes/admin/notifications.routes.js'
 
 //inicializacion del servidor
 const app = express();
@@ -37,6 +38,7 @@ pool.connect((err, client, release) => {
 
 //usar los modulos de las rutas (end ponit)
 app.use("/api", generalRoutes);
-app.use("/api", authRoutes)
+app.use("/api", authRoutes);
+app.use("/api", notificationRoutes);
 
 export default app;
