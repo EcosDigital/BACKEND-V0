@@ -14,6 +14,7 @@ import generalRoutes from "./routes/app.routes.js";
 import authRoutes from "./routes/aut.routes.js";
 import notificationRoutes from "./routes/admin/notifications.routes.js";
 import utilRoutes from "./routes/admin/utils.routes.js";
+import postRoutes from './routes/admin/post.routes.js'
 
 //inicializacion del servidor
 const app = express();
@@ -56,6 +57,7 @@ app.use("/api", generalRoutes);
 app.use("/api", authRoutes);
 app.use("/api", notificationRoutes);
 app.use("/api", utilRoutes);
+app.use("/api", postRoutes);
 
 
 export default app;
