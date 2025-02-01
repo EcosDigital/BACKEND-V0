@@ -15,6 +15,9 @@ import authRoutes from "./routes/aut.routes.js";
 import notificationRoutes from "./routes/admin/notifications.routes.js";
 import utilRoutes from "./routes/admin/utils.routes.js";
 import postRoutes from './routes/admin/post.routes.js'
+import areaRoutes from './routes/config/area.routes.js'
+import categoryRoutes from './routes/config/categoria.routes.js'
+import supportRoutes from './routes/support.routes.js'
 
 //inicializacion del servidor
 const app = express();
@@ -58,6 +61,8 @@ app.use("/api", authRoutes);
 app.use("/api", notificationRoutes);
 app.use("/api", utilRoutes);
 app.use("/api", postRoutes);
-
+app.use("/api", areaRoutes);
+app.use("/api", categoryRoutes);
+app.use("/api", supportRoutes);
 
 export default app;
