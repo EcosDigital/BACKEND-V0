@@ -102,11 +102,12 @@ export const deleteCategoryRequest = async (req, res) => {
       return res.status(404).json({message: "No existe el registro!"})
     }
     //eliminar registro
-    await pool.query("DELTE FROM ref_categoria WHERE id = $1", [id])
+    await pool.query("DELETE FROM ref_categoria WHERE id = $1", [id])
 
     return res.status(200).json({message : "Registro eliminado con exito"})
 
   } catch (error) {
+    console.log(error)
     return res.status(500).json({message: "Hubo un error inesperado!"})
   }
 };
